@@ -1,55 +1,48 @@
-from datetime import date,timedelta
-import datetime
+from datetime import datetime
 
-a={'cust1':[(2019,5,12),(2019,6,24),(2018,2,11),(2018,8,13)],
-   'cust2':[(2018,8,13),(2020,8,25),(2019,10,21)],
-   'cust3':[(2017,7,25),(2018,8,25),(2019,1,5)],
-   'cust4':[(2018,6,4),(2019,12,12),(2020,5,14),(2020,8,7)]}
-
-b={'cust1':[(2017,12,12),(2019,1,24),(2020,8,25)],
-   'cust2':[(2018,9,24),(2017,8,15)],
-   'cust3':[(2019,11,7)],
-   'cust4':[(2021,1,12),(2020,4,24)]}
-
-def print_data():
-    for i in a.keys():
-        print("Customer name:",i,"\n","Purchased date:",(a[i]))
-    
-
-
-def find(name):
-    if name in a:
-        year = int(input("\nEnter the year:"))
-        month = int(input("Enter the month:"))
-        day = int(input("Enter the day:"))
-        l=(year,month,day)
-        date2=date(year,month,day)
-        for i in a[name]:
-            if i==l:
-                mini=1000
-                newdate=i
-                for j in b[name]:
-                    d=str(j)
-                    e=d.split(",")
-                    ss=e[0].replace("(","")
-                    dd=e[2].replace(")","")
-                    year1=int(ss)
-                    month1=int(e[1])
-                    day1=int(dd)
-                    date1=date(year1,month1,day1)
-                    if(date2>date1):
-                        new_date=(date2-date1).days
-                        if new_date<mini:
-                            mini=new_date
-                print(mini,"days")
-           
-    else:
-        print("Invalid customer name")
-        
-                  
+purchased_list = [
+{'Cust1':'12/5/2019'},
+{'Cust1':'24/6/2019'},
+{'Cust1':'11/2/2018'},
+{'Cust1':'13/8/2018'},
+{'Cust2':'13/8/2018'},
+{'Cust2':'25/08/2020'},
+{'Cust2':'21/10/2019'},
+{'Cust3':'25/07/2017'},
+{'Cust3':'25/08/2018'},
+{'Cust3':'05/01/2019'},
+{'Cust4':'04/06/2018'},
+{'Cust4':'12/12/2019'},
+{'Cust4':'14/05/2020'},
+{'Cust4':'07/08/2020'},
+]
 
 
-print_data()
-name= str(input("\nEnter name:"))
-find(name)
-           
+key_list = [
+{'Cust1':'12/12/2017'},
+{'Cust1':'24/01/2019'},
+{'Cust1':'25/08/2020'},
+{'Cust2':'24/09/2018'},
+{'Cust2':'15/08/2017'},
+{'Cust3':'07/11/2019'},
+{'Cust4':'24/04/2020'},
+{'Cust4':'12/01/2021'},
+]
+
+for list1 in purchased_list:
+    for data1 in list1:
+        purchase_date=datetime.strptime(list1[data1],'%d/%m/%Y').date()
+        c=[]
+        for list2 in key_list:
+           for data2 in list2:
+                if data2==data1:
+                    
+                    
+                    key_date=datetime.strptime(list2[data2],'%d/%m/%Y').date()
+                    if purchase_date>key_date:
+                        c.append(key_date)
+        if not c :
+            print("Null")
+        else:
+            nearest_date=min(c, key=lambda sub:abs(sub-key_date))
+            print((purchase_date-nearest_date).days)
